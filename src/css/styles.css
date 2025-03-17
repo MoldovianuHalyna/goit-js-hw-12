@@ -169,3 +169,22 @@ body {
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
+/* load more button styles */
+.load-more-btn {
+  margin: 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 125px;
+  height: 40px;
+  background-color: #4e75ff;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
+  transition: background-color 250ms linear;
+}
+.load-more-btn:hover {
+  background-color: #6c8cff;
+}

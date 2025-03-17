@@ -7,6 +7,7 @@ const refs = {
   form: document.querySelector('.form'),
   gallery: document.querySelector('.gallery'),
   backdrop: document.querySelector('.backdrop'),
+  loadMoreBtn: document.querySelector('.load-more-btn'),
 };
 // Function to show the loader
 const showLoader = () => {
@@ -20,7 +21,7 @@ const hideLoader = () => {
 
 //getting data from server and creating a gallery
 
-const searchInputHandeling = function (event) {
+const searchInputHandeling = async function (event) {
   event.preventDefault();
   const dataName = event.currentTarget.elements['search-text'].value.trim();
 
@@ -30,42 +31,38 @@ const searchInputHandeling = function (event) {
   }
 
   showLoader();
-  getPhotoFromServer(dataName)
-    .then(({ data: { hits } }) => {
-      if (hits.length === 0) {
-        iziToast.error({
-          messageColor: '#fff',
-          close: false,
-          iconUrl: icon,
-          backgroundColor: '#ef4040',
-          position: 'topRight',
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
-          timeout: 10000,
-        });
-
-        refs.form.reset();
-        refs.gallery.innerHTML = '';
-        return;
-      }
-      const galleryTemplate = hits
-        .map(img => createGalleryMarkup(img))
-        .join('');
-      refs.gallery.innerHTML = galleryTemplate;
-      createLightBox();
-      refs.form.reset();
-    })
-    .catch(error => {
+  try {
+    const { hits } = await getPhotoFromServer(dataName);
+    if (hits.length === 0) {
       iziToast.error({
         messageColor: '#fff',
+        close: false,
+        iconUrl: icon,
         backgroundColor: '#ef4040',
         position: 'topRight',
-        message: 'Oops! Something went wrong. Please try again later.',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
         timeout: 10000,
       });
-    })
-    .finally(() => {
-      hideLoader();
+      refs.form.reset();
+      refs.gallery.innerHTML = '';
+      return;
+    }
+    const galleryTemplate = hits.map(img => createGalleryMarkup(img)).join('');
+    refs.gallery.innerHTML = galleryTemplate;
+    createLightBox();
+    refs.form.reset();
+    refs.loadMoreBtn.classList.remove('is-hidden');
+  } catch (error) {
+    iziToast.error({
+      messageColor: '#fff',
+      backgroundColor: '#ef4040',
+      position: 'topRight',
+      message: 'Oops! Something went wrong. Please try again later.',
+      timeout: 10000,
     });
+  } finally {
+    hideLoader();
+  }
 };
 refs.form.addEventListener('submit', searchInputHandeling);
