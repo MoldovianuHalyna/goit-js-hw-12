@@ -56,9 +56,8 @@ const searchInputHandeling = async function (event) {
         iconUrl: icon,
         backgroundColor: '#ef4040',
         position: 'topRight',
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
-        timeout: 10000,
+        message: `Sorry, there are no images matching ${dataName}, your search query. Please try again!`,
+        timeout: 5000,
       });
 
       loadBtnHide();
