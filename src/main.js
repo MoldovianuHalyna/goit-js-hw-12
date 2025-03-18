@@ -6,7 +6,7 @@ import icon from './img/icon.svg';
 const refs = {
   form: document.querySelector('.form'),
   gallery: document.querySelector('.gallery'),
-  loader: document.querySelector('.js-loader'),
+  loader: document.querySelector('.loader'),
   loadMoreBtn: document.querySelector('.js-load-more-btn'),
 };
 // Function to show the loader
@@ -24,7 +24,8 @@ const loadBtnShow = () => refs.loadMoreBtn.classList.remove('is-hidden');
 //to show the button
 const loadBtnHide = () => refs.loadMoreBtn.classList.add('is-hidden');
 //getting data from server and creating a gallery
-
+hideLoader();
+3;
 let page = 1;
 let dataName = '';
 let totalPages = 0;
