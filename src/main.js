@@ -42,10 +42,13 @@ const searchInputHandeling = async function (event) {
   page = 1;
   loadBtnHide();
 
+  refs.gallery.innerHTML = '';
+
   showLoader();
 
   try {
     const { hits, totalHits } = await getPhotoFromServer(dataName, page);
+
     if (hits.length === 0) {
       iziToast.error({
         messageColor: '#fff',
@@ -71,8 +74,6 @@ const searchInputHandeling = async function (event) {
 
     totalPages = Math.ceil(totalHits / 15);
     if (totalPages > 1) {
-      refs.form.reset();
-
       loadBtnShow();
       refs.loadMoreBtn.addEventListener('click', onLoadMoreBtn);
     }
@@ -95,9 +96,11 @@ const onLoadMoreBtn = async function () {
   try {
     page++;
 
-    if (totalPages === page) {
+    if (page >= totalPages) {
       loadBtnHide();
+
       refs.loadMoreBtn.removeEventListener('click', onLoadMoreBtn);
+
       iziToast.info({
         message: `We're sorry, but you've reached the end of search results`,
       });
@@ -105,11 +108,20 @@ const onLoadMoreBtn = async function () {
 
     const { hits } = await getPhotoFromServer(dataName, page);
     const galleryTemplate = hits.map(img => createGalleryMarkup(img)).join('');
-    refs.gallery.insertAdjacentHTML('beforeend', galleryTemplate);
-    const itemHeight = refs.gallery.children[0].getBoundingClientRect().height;
 
-    window.scrollBy({ top: itemHeight * 2, behavior: 'smooth' });
-    lightbox.refresh();
+    refs.gallery.insertAdjacentHTML('beforeend', galleryTemplate);
+
+    setTimeout(() => {
+      const lastItem = refs.gallery.lastElementChild;
+      const itemHeight = lastItem.getBoundingClientRect().height;
+
+      window.scrollBy({
+        top: itemHeight * 2,
+        behavior: 'smooth',
+      });
+
+      lightbox.refresh();
+    }, 0);
 
     showLoader();
   } catch (error) {
