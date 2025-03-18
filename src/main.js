@@ -25,7 +25,7 @@ const loadBtnShow = () => refs.loadMoreBtn.classList.remove('is-hidden');
 const loadBtnHide = () => refs.loadMoreBtn.classList.add('is-hidden');
 //getting data from server and creating a gallery
 hideLoader();
-3;
+
 let page = 1;
 let dataName = '';
 let totalPages = 0;
