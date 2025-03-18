@@ -87,6 +87,7 @@ const searchInputHandeling = async function (event) {
     });
   } finally {
     hideLoader();
+    refs.form.reset();
   }
 };
 
