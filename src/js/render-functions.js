@@ -31,11 +31,8 @@ export const createGalleryMarkup = function ({
   </li>`;
 };
 
-export const createLightBox = function () {
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captions: true,
-    captionDelay: 250,
-    captionsData: 'alt',
-  });
-  lightbox.refresh();
-};
+export const lightbox = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionDelay: 250,
+  captionsData: 'alt',
+});
